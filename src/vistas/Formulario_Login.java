@@ -128,12 +128,7 @@ public void RecibirInstalacion(boolean instalado){
             }
            
         } else {
-             if (superadmin.getEmail().equals(UsuarioEmail.getText()) && superadmin.getPassword().equals(pass)
-                || superadmin1.getEmail().equals(UsuarioEmail.getText()) && superadmin1.getPassword().equals(pass)) {
-                Formulario_SuperAdmin formGeneral = new Formulario_SuperAdmin();
-                formGeneral.setVisible(true);
-                setVisible(false);
-            }
+          
             Parqueadero par = new Parqueadero();
             if (par.LoginUsuario(UsuarioEmail.getText(), pass)) {
                 Formulario_Admin formularioAdmin = new Formulario_Admin();
