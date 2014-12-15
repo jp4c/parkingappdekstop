@@ -118,7 +118,7 @@ public void RecibirInstalacion(boolean instalado){
         // TODO add your handling code here:
      
         String pass = new String(contrasena.getPassword());
-        if (instalado == false) {
+//        if (instalado == false) {
 
             if (superadmin.getEmail().equals(UsuarioEmail.getText()) && superadmin.getPassword().equals(pass)
                 || superadmin1.getEmail().equals(UsuarioEmail.getText()) && superadmin1.getPassword().equals(pass)) {
@@ -127,20 +127,16 @@ public void RecibirInstalacion(boolean instalado){
                 setVisible(false);
             }
            
-        } else {
-             if (superadmin.getEmail().equals(UsuarioEmail.getText()) && superadmin.getPassword().equals(pass)
-                || superadmin1.getEmail().equals(UsuarioEmail.getText()) && superadmin1.getPassword().equals(pass)) {
-                Formulario_SuperAdmin formGeneral = new Formulario_SuperAdmin();
-                formGeneral.setVisible(true);
-                setVisible(false);
-            }
+//        } 
+            else{
+            System.out.println("Ejecutando Consulta");    
             Parqueadero par = new Parqueadero();
             if (par.LoginUsuario(UsuarioEmail.getText(), pass)) {
                 Formulario_Admin formularioAdmin = new Formulario_Admin();
                 formularioAdmin.setVisible(true);
                 setVisible(false);
             }
-        }
+       }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

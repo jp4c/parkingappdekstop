@@ -177,9 +177,7 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
        Usuario user= new Usuario( tf_nombre.getText(), tf_apellido.getText(), Integer.parseInt(tf_tel.getText()),jComboBox1.getSelectedItem().toString(), pass,Integer.parseInt(tf_cedula.getText()) , tf_email.getText(),this.id_parqueadero);
        user.RecibirIdParquedero(this.id_parqueadero);
        user.insertarUsuario();
-       boolean instalado=true;
        Formulario_Login formLogin = new Formulario_Login();
-       formLogin.RecibirInstalacion (instalado);
        formLogin.setVisible(true);
        setVisible(false);
        
