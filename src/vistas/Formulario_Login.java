@@ -5,6 +5,9 @@
  */
 package vistas;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import modelo.Conectar;
 import modelo.Parqueadero;
 import modelo.Usuario;
 
@@ -14,8 +17,8 @@ import modelo.Usuario;
  */
 public class Formulario_Login extends javax.swing.JFrame {
 
-    Usuario superadmin;
-    Usuario superadmin1;
+    Usuario superAdmin;
+    Usuario superAdmin1;
     boolean instalado;
 
     /**
@@ -24,18 +27,22 @@ public class Formulario_Login extends javax.swing.JFrame {
     public void RecibirNombre(String nom) {
         nombrePar.setText(nom);
     }
-public void RecibirInstalacion(boolean instalado){
-    this.instalado=instalado;
-}
-    public Formulario_Login() {
-        initComponents();
-       
+
+    public void RecibirInstalacion(boolean instalado) {
+        this.instalado = instalado;
     }
 
-    public void EnviarUsuarios(Usuario superAdmin, Usuario superAdmin1) {
-        this.superadmin = superAdmin;
-        this.superadmin1 = superAdmin1;
+
+    public Formulario_Login() {
+        initComponents();
+         superAdmin = new Usuario("Ivan", "Martinez", 890000, "SuperAdmin", "SA123456", 000, "vanmartc.com", 0);
+         superAdmin1 = new Usuario("Juan Pablo", "Aguirre", 890000, "SuperAdmin", "SA123456", 000, "jpac.com", 0);
     }
+
+//    public void EnviarUsuarios(Usuario superAdmin, Usuario superAdmin1) {
+//        this.superAdmin = superAdmin;
+//        this.superAdmin1 = superAdmin1;
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -116,24 +123,33 @@ public void RecibirInstalacion(boolean instalado){
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-     
-        String pass = new String(contrasena.getPassword());
-        if (instalado == false) {
 
-            if (superadmin.getEmail().equals(UsuarioEmail.getText()) && superadmin.getPassword().equals(pass)
-                || superadmin1.getEmail().equals(UsuarioEmail.getText()) && superadmin1.getPassword().equals(pass)) {
-                Formulario_SuperAdmin formGeneral = new Formulario_SuperAdmin();
-                formGeneral.setVisible(true);
-                setVisible(false);
-            }
-           
+        String pass = new String(contrasena.getPassword());
+//        if (instalado == false) {
+
+        if (superAdmin.getEmail().equals(UsuarioEmail.getText()) && superAdmin.getPassword().equals(pass)
+            || superAdmin1.getEmail().equals(UsuarioEmail.getText()) && superAdmin1.getPassword().equals(pass)) {
+            Formulario_SuperAdmin formGeneral = new Formulario_SuperAdmin();
+            formGeneral.setVisible(true);
+            setVisible(false);
         } else {
-          
-            Parqueadero par = new Parqueadero();
-            if (par.LoginUsuario(UsuarioEmail.getText(), pass)) {
+            System.out.println("Ejecutando Consulta");
+
+            Usuario usuario=new Usuario();
+            if (usuario.LoginUsuario(UsuarioEmail.getText(), pass))
+            { 
+                System.out.println(usuario.getNombre());
+                usuario.CambioSesion(UsuarioEmail.getText());
+                if(usuario.getRole().equals("Administrador")){
                 Formulario_Admin formularioAdmin = new Formulario_Admin();
                 formularioAdmin.setVisible(true);
                 setVisible(false);
+                }
+                if(usuario.getRole().equals("Empleado")){
+                Formulario_RegistroTicket formularioEmpleado = new Formulario_RegistroTicket();
+                formularioEmpleado.setVisible(true);
+                setVisible(false);
+                }
             }
         }
 

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelo.Conectar;
+import modelo.Parqueadero;
 import modelo.Usuario;
 
 /**
@@ -23,17 +24,19 @@ import modelo.Usuario;
  * @author JP
  */
 public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
-   int id_parqueadero;
-  
+
+    int id_parqueadero;
+
     public Formulario_RegistroUsuarios() {
-        
-            initComponents();
-      
+
+        initComponents();
+
     }
-    
+
     public void recibirId(int id) {
         this.id_parqueadero = id;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,8 +60,9 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
         tf_tel = new javax.swing.JTextField();
         tf_email = new javax.swing.JTextField();
         tf_password = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        btn_guardar_form_RegUsuarios = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
+        btn_cancelar_form_RegUsuarios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,14 +82,21 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
 
         jLabel8.setText("CONTRASEÑA:");
 
-        jButton1.setText("GUARDAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_guardar_form_RegUsuarios.setText("Guardar");
+        btn_guardar_form_RegUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_guardar_form_RegUsuariosActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrador", "Empleado" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccionar rol", "Administrador", "Empleado" }));
+
+        btn_cancelar_form_RegUsuarios.setText("Cancelar");
+        btn_cancelar_form_RegUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelar_form_RegUsuariosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,12 +134,14 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
                             .addComponent(tf_tel)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 43, Short.MAX_VALUE)))))
+                                .addGap(0, 40, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(125, 125, 125))
+                .addComponent(btn_guardar_form_RegUsuarios)
+                .addGap(18, 18, 18)
+                .addComponent(btn_cancelar_form_RegUsuarios)
+                .addGap(34, 34, 34))
             .addGroup(layout.createSequentialGroup()
                 .addGap(198, 198, 198)
                 .addComponent(jLabel1)
@@ -162,28 +175,63 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(tf_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_guardar_form_RegUsuarios)
+                    .addComponent(btn_cancelar_form_RegUsuarios))
                 .addGap(37, 37, 37))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    private void btn_guardar_form_RegUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardar_form_RegUsuariosActionPerformed
         // TODO add your handling code here:
-       String pass=new String(tf_password.getPassword());
+        String pass = new String(tf_password.getPassword());
+        Parqueadero par = new Parqueadero();
+        int idparqueadero = par.GetIdParquedero();
+        Usuario user = new Usuario(tf_nombre.getText(), tf_apellido.getText(), Integer.parseInt(tf_tel.getText()), jComboBox1.getSelectedItem().toString(), pass, Integer.parseInt(tf_cedula.getText()), tf_email.getText(), this.id_parqueadero);
+        //user.RecibirIdParquedero(this.id_parqueadero);
+        user.insertarUsuario(idparqueadero);
+        Mensaje_De_Registrar_Mas_Empleados mensaje = new Mensaje_De_Registrar_Mas_Empleados();
+        dispose();
+        mensaje.setVisible(true);
+        
+        
+        //LIMPIANDO FORMULARIO
+        tf_nombre.setText("");
+        tf_apellido.setText("");
+        tf_tel.setText("");
+        tf_cedula.setText("");
+        tf_password.setText("");
+        tf_email.setText("");
+        
        
-       Usuario user= new Usuario( tf_nombre.getText(), tf_apellido.getText(), Integer.parseInt(tf_tel.getText()),jComboBox1.getSelectedItem().toString(), pass,Integer.parseInt(tf_cedula.getText()) , tf_email.getText(),this.id_parqueadero);
-       user.RecibirIdParquedero(this.id_parqueadero);
-       user.insertarUsuario();
-       boolean instalado=true;
-       Formulario_Login formLogin = new Formulario_Login();
-       formLogin.RecibirInstalacion (instalado);
-       formLogin.setVisible(true);
-       setVisible(false);
-       
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+//        if (user.getRole().equals("Administrador")) {
+//
+//            Formulario_Login formLogin = new Formulario_Login();
+//            formLogin.setVisible(true);
+//            setVisible(false);
+//        }
+//        if (user.getRole().equals("Empleado")) {
+//            Formulario_Admin formAdmin = new Formulario_Admin();
+//            formAdmin.setVisible(true);
+//            setVisible(false);
+//        }
+//
+
+    }//GEN-LAST:event_btn_guardar_form_RegUsuariosActionPerformed
+
+
+    private void btn_cancelar_form_RegUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelar_form_RegUsuariosActionPerformed
+        // TODO add your handling code here:
+        Formulario_Login formLogin = new Formulario_Login();
+        formLogin.setVisible(true);
+        setVisible(false);
+
+
+    }//GEN-LAST:event_btn_cancelar_form_RegUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,7 +270,8 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_cancelar_form_RegUsuarios;
+    private javax.swing.JButton btn_guardar_form_RegUsuarios;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

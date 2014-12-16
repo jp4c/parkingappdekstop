@@ -91,34 +91,7 @@ public class Parqueadero {
 
     
     
- public boolean LoginUsuario(String email, String password){
-     LinkedList<Usuario> listaUsuarios=new LinkedList<Usuario>();
-      try
-      {
-        Conectar con = new Conectar();
-        Connection reg = con.conexion();
-        Statement st = reg.createStatement();
-         ResultSet rs = st.executeQuery("select contraseña from usuario where email LIKE "+email);
-         int i=0;
-         while (rs.next())
-         {
-             
-             System.out.println("LOGUEADO");
-         }
-         rs.close();
-         st.close();
-         reg.close();
-         
-         
-      }
-      catch (Exception e)
-      {
-         e.printStackTrace();
-      }
-      
-     
-     return true;
- }    
+ 
  public void registrarParqueadero() {
         Conectar con = new Conectar();
         Connection reg = con.conexion();
