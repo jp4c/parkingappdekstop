@@ -32,18 +32,16 @@ public class Formulario_Login extends javax.swing.JFrame {
         this.instalado = instalado;
     }
 
-
     public Formulario_Login() {
         initComponents();
-         superAdmin = new Usuario("Ivan", "Martinez", 890000, "SuperAdmin", "SA123456", 000, "vanmartc.com", 0);
-         superAdmin1 = new Usuario("Juan Pablo", "Aguirre", 890000, "SuperAdmin", "SA123456", 000, "jpac.com", 0);
+        superAdmin = new Usuario("Ivan", "Martinez", 890000, "SuperAdmin", "SA123456", 000, "vanmartc.com", 0);
+        superAdmin1 = new Usuario("Juan Pablo", "Aguirre", 890000, "SuperAdmin", "SA123456", 000, "jpac.com", 0);
     }
 
 //    public void EnviarUsuarios(Usuario superAdmin, Usuario superAdmin1) {
 //        this.superAdmin = superAdmin;
 //        this.superAdmin1 = superAdmin1;
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -128,27 +126,36 @@ public class Formulario_Login extends javax.swing.JFrame {
 //        if (instalado == false) {
 
         if (superAdmin.getEmail().equals(UsuarioEmail.getText()) && superAdmin.getPassword().equals(pass)
-            || superAdmin1.getEmail().equals(UsuarioEmail.getText()) && superAdmin1.getPassword().equals(pass)) {
+                || superAdmin1.getEmail().equals(UsuarioEmail.getText()) && superAdmin1.getPassword().equals(pass)) {
             Formulario_SuperAdmin formGeneral = new Formulario_SuperAdmin();
             formGeneral.setVisible(true);
             setVisible(false);
         } else {
-            System.out.println("Ejecutando Consulta");
+            //System.out.println("Ejecutando Consulta");
 
-            Usuario usuario=new Usuario();
-            if (usuario.LoginUsuario(UsuarioEmail.getText(), pass))
-            { 
+            Usuario usuario = new Usuario();
+            if (usuario.LoginUsuario(UsuarioEmail.getText(), pass)) {
                 System.out.println(usuario.getNombre());
-                usuario.CambioSesion(UsuarioEmail.getText());
-                if(usuario.getRole().equals("Administrador")){
-                Formulario_Admin formularioAdmin = new Formulario_Admin();
-                formularioAdmin.setVisible(true);
-                setVisible(false);
+                usuario.AbrirSesion(UsuarioEmail.getText());
+                
+                if (usuario.getRole().equals("Administrador")) 
+                {
+                    Formulario_Admin formularioAdmin = new Formulario_Admin();
+                    formularioAdmin.RecibirAdmin(usuario);
+                    Formulario_RegistroUsuarios form_RegistroUsuarios = new Formulario_RegistroUsuarios();
+                    
+                    System.out.println(usuario.getNombre());
+                    form_RegistroUsuarios.recibirAdmin(usuario);
+                    formularioAdmin.setVisible(true);
+                    setVisible(false);
                 }
-                if(usuario.getRole().equals("Empleado")){
-                Formulario_RegistroTicket formularioEmpleado = new Formulario_RegistroTicket();
-                formularioEmpleado.setVisible(true);
-                setVisible(false);
+                if (usuario.getRole().equals("Empleado")) 
+                {
+                    Formulario_RegistroTicket formularioEmpleado = new Formulario_RegistroTicket();
+                    formularioEmpleado.recibirEmpleado(usuario);
+                    
+                    formularioEmpleado.setVisible(true);
+                    setVisible(false);
                 }
             }
         }

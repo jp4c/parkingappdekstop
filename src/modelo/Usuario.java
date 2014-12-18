@@ -49,10 +49,8 @@ public class Usuario {
         this.idParqueadero = idParqueadero;
     }
 
-    public void RecibirIdParquedero(int idParqueadero) {
-
-    }
-public void CambioSesion(String email){
+   
+public void AbrirSesion(String email){
      try {
                 // create the java mysql update preparedstatement
                 Conectar con = new Conectar();
@@ -64,12 +62,30 @@ public void CambioSesion(String email){
 
                 // execute the java preparedstatement
                 preparedStmt.executeUpdate();
-                System.out.println("CAMBIO DE SESION LISTO");
+                System.out.println("Sesion Abierta");
                 reg.close();
               } catch (Exception e) {
               System.out.println(""+ e);  
               }
 }
+ public void CerrarSesion(String email) {
+        try {
+                // create the java mysql update preparedstatement
+                Conectar con = new Conectar();
+                Connection reg = con.conexion();    
+                String query = "update usuario set sesion = ? where email = ?"; 
+                PreparedStatement preparedStmt = reg.prepareStatement(query);
+                preparedStmt.setBoolean(1, false);
+                preparedStmt.setString(2, email);
+
+                // execute the java preparedstatement
+                preparedStmt.executeUpdate();
+                System.out.println("Sesion Cerrada");
+                reg.close();
+              } catch (Exception e) {
+              System.out.println(""+ e);  
+              }
+    }
     public boolean LoginUsuario(String email, String password) {
        
         try {
@@ -79,15 +95,17 @@ public void CambioSesion(String email){
             //ResultSet rs = st.executeQuery("select * from usuario where email like .com");
             ResultSet rs = st.executeQuery("select * from usuario where email ='" + email + "' && contraseña = '" + password + "'");
             while (rs.next()) {
-                System.out.println("LOGUEADO");
+                System.out.println("LOGUEADO Y USUARIO OBTENIDO");
+       
+                //OBTENIENDO USUARIO DE LA BD
                 nombre=rs.getString("nombre");
                 apellido=rs.getString("apellido");
                 cedula=rs.getInt("cedula");
-                email=rs.getString("email");
+                this.email=rs.getString("email");
                 telefono=rs.getInt("telefono");
                 idParqueadero=rs.getInt("parqueadero_idparqueadero");
                 role=rs.getString("role");
-                password=rs.getString("contraseña");
+                this.password=rs.getString("contraseña");
                 sesion=rs.getBoolean("sesion");
                 
                 
@@ -105,6 +123,7 @@ public void CambioSesion(String email){
     }
 
     public void insertarUsuario(int idParqueadero) {
+        
         this.idParqueadero = idParqueadero;
         Conectar con = new Conectar();
         Connection reg = con.conexion();
@@ -124,7 +143,7 @@ public void CambioSesion(String email){
             int n = pst.executeUpdate();
 
             if (n > 0) {
-                JOptionPane.showMessageDialog(null, "Registrado con exito BITCH");
+                JOptionPane.showMessageDialog(null, "Registrado con exito ");
             }
             pst.close();
             reg.close();
@@ -133,37 +152,10 @@ public void CambioSesion(String email){
         }
     }
 
-    public void AbrirSesion() {
-        Conectar con = new Conectar();
-        Connection reg = con.conexion();
-        try {
-            // create the java mysql update preparedstatement
-            String query = "update usuarios set session = ? where email = ?";
-            PreparedStatement preparedStmt = reg.prepareStatement(query);
-            preparedStmt.setBoolean(1, true);
-            preparedStmt.setString(2, this.getEmail());
+    
 
-            // execute the java preparedstatement
-            preparedStmt.executeUpdate();
+   
 
-            reg.close();
-        } catch (Exception e) {
-            System.out.println("" + e);
-        }
-
-    }
-
-    public void CerrarSesion() {
-        setSesion(false);
-    }
-
-    public boolean isSesion() {
-        return sesion;
-    }
-
-    public void setSesion(boolean sesion) {
-        this.sesion = sesion;
-    }
 
     public String getEmail() {
         return email;
@@ -174,6 +166,28 @@ public void CambioSesion(String email){
     }
 
     public int getId() {
+        try {
+            Conectar con = new Conectar();
+            Connection reg = con.conexion();
+            Statement st = reg.createStatement();
+            //ResultSet rs = st.executeQuery("select * from usuario where email like .com");
+            ResultSet rs = st.executeQuery("select * from usuario where email ='" + email + "' && contraseña = '" + password + "'");
+            while (rs.next()) {
+                
+       
+                //OBTENIENDO IDUSUARIO DE LA BD
+                id=rs.getInt("idusuario");
+                System.out.println("idusuario obtenido");
+                
+            }
+            
+            rs.close();
+            st.close();
+            reg.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return id;
     }
 

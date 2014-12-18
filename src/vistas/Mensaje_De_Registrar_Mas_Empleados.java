@@ -6,18 +6,22 @@
 package vistas;
 
 import java.awt.event.MouseListener;
+import modelo.Usuario;
 
 /**
  *
  * @author JP
  */
 public class Mensaje_De_Registrar_Mas_Empleados extends javax.swing.JFrame {
-
+     Usuario admin;
     /**
      * Creates new form Mensaje_De_Registrar_Mas_Empleados
      */
     public Mensaje_De_Registrar_Mas_Empleados() {
         initComponents();
+    }
+    public void recibirAdmin(Usuario admin){
+        this.admin=admin;
     }
 
     /**
@@ -95,6 +99,7 @@ public class Mensaje_De_Registrar_Mas_Empleados extends javax.swing.JFrame {
     private void btn_si_form_mas_empleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_si_form_mas_empleadosActionPerformed
         // TODO add your handling code here:
         Formulario_RegistroUsuarios fru = new Formulario_RegistroUsuarios();
+        fru.recibirAdmin(admin);
         fru.setVisible(true);
         this.setVisible(false);
        
@@ -103,6 +108,7 @@ public class Mensaje_De_Registrar_Mas_Empleados extends javax.swing.JFrame {
     private void btn_no_form_mas_empleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_no_form_mas_empleadosActionPerformed
         // TODO add your handling code here:
         Formulario_Admin fa = new Formulario_Admin();
+        fa.RecibirAdmin(admin);
         fa.setVisible(true);
         dispose(); 
         

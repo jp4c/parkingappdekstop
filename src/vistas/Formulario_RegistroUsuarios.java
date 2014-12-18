@@ -26,6 +26,7 @@ import modelo.Usuario;
 public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
 
     int id_parqueadero;
+    Usuario admin;
 
     public Formulario_RegistroUsuarios() {
 
@@ -35,6 +36,11 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
 
     public void recibirId(int id) {
         this.id_parqueadero = id;
+    }
+    public void recibirAdmin(Usuario admin){
+        this.admin=admin;
+        System.out.println(admin.getNombre());
+        
     }
 
     /**
@@ -193,11 +199,22 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
         Usuario user = new Usuario(tf_nombre.getText(), tf_apellido.getText(), Integer.parseInt(tf_tel.getText()), jComboBox1.getSelectedItem().toString(), pass, Integer.parseInt(tf_cedula.getText()), tf_email.getText(), this.id_parqueadero);
         //user.RecibirIdParquedero(this.id_parqueadero);
         user.insertarUsuario(idparqueadero);
-        Mensaje_De_Registrar_Mas_Empleados mensaje = new Mensaje_De_Registrar_Mas_Empleados();
+        System.out.println(admin.getNombre());
+        if (user.getRole().equals("Empleado")) {
+           
+            Mensaje_De_Registrar_Mas_Empleados mensaje = new Mensaje_De_Registrar_Mas_Empleados();
+            System.out.println(admin.getNombre());
+            mensaje.recibirAdmin(admin);
+            mensaje.setVisible(true);
+
+        } else {
+           
+            
+           Formulario_SuperAdmin  nuevo= new Formulario_SuperAdmin();
+           nuevo.setVisible(true);
+           
+        }
         dispose();
-        mensaje.setVisible(true);
-        
-        
         //LIMPIANDO FORMULARIO
         tf_nombre.setText("");
         tf_apellido.setText("");
@@ -205,9 +222,7 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
         tf_cedula.setText("");
         tf_password.setText("");
         tf_email.setText("");
-        
-       
-        
+
 //        if (user.getRole().equals("Administrador")) {
 //
 //            Formulario_Login formLogin = new Formulario_Login();
@@ -226,8 +241,10 @@ public class Formulario_RegistroUsuarios extends javax.swing.JFrame {
 
     private void btn_cancelar_form_RegUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelar_form_RegUsuariosActionPerformed
         // TODO add your handling code here:
-        Formulario_Login formLogin = new Formulario_Login();
-        formLogin.setVisible(true);
+        
+        Formulario_Admin formAmin = new Formulario_Admin();
+        formAmin.RecibirAdmin(admin);
+        formAmin.setVisible(true);
         setVisible(false);
 
 

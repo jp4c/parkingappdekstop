@@ -1,5 +1,14 @@
 package modelo;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import vistas.Formulario_RegistroParqueadero;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,13 +20,73 @@ package modelo;
  */
 public class Ticket {
     String id;
-    String fecha_entrada;
-    String fecha_salida;
+    Date fecha_entrada;
+    Date fecha_salida;
     String placa;
     TipoVehiculo id_TipoVehiculo;
-    Usuario id_usuario;
+    int id_usuario;
+    int idParqueadero;
+
+    public int getIdParqueadero() {
+        return idParqueadero;
+    }
+
+    public void setIdParqueadero(int idParqueadero) {
+        this.idParqueadero = idParqueadero;
+    }
     float valor;
 
+    public Ticket( Date fecha_entrada, Date fecha_salida, String placa, TipoVehiculo id_TipoVehiculo, int id_usuario, float valor, int idParqueadero) {
+        this.fecha_entrada = fecha_entrada;
+        this.fecha_salida = fecha_salida;
+        this.placa = placa;
+        this.id_TipoVehiculo = id_TipoVehiculo;
+        this.id_usuario = id_usuario;
+        this.valor = valor;
+        this.idParqueadero = idParqueadero;
+    }
+
+   
+    public Ticket() {
+    }
+    
+    //CRUD Create Read Update Delete
+    public void crear(Ticket t){
+        Conectar con = new Conectar();
+        Connection reg = con.conexion();
+        String sql;
+        sql = "INSERT INTO `ticket`( `fecha_entrada`, `fecha_salida`, `placa`, `valor`, `parqueadero_idparqueadero`, `tipo_vehiculo_idtipo_vehiculo`, `usuario_idusuario`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7])";
+     try {
+            PreparedStatement pst = reg.prepareStatement(sql);
+            pst.setDate(1, fecha_entrada);
+            pst.setDate(2, fecha_salida);
+            pst.setString(3, placa);
+            pst.setInt(4, id_TipoVehiculo);
+            
+            int n = pst.executeUpdate();
+
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "Registrado con exito ");
+            }
+            pst.close();
+            reg.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Formulario_RegistroParqueadero.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   
+    }
+    
+     public void leer(int id){
+    
+    }
+    
+    public void borrar(int id){
+    
+    }
+    
+    public void modificar(int id){
+    
+    }
     
     public String getId() {
         return id;
@@ -27,19 +96,19 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getFecha_entrada() {
+    public Date getFecha_entrada() {
         return fecha_entrada;
     }
 
-    public void setFecha_entrada(String fecha_entrada) {
+    public void setFecha_entrada(Date fecha_entrada) {
         this.fecha_entrada = fecha_entrada;
     }
 
-    public String getFecha_salida() {
+    public Date getFecha_salida() {
         return fecha_salida;
     }
 
-    public void setFecha_salida(String fecha_salida) {
+    public void setFecha_salida(Date fecha_salida) {
         this.fecha_salida = fecha_salida;
     }
 
@@ -59,11 +128,11 @@ public class Ticket {
         this.id_TipoVehiculo = id_TipoVehiculo;
     }
 
-    public Usuario getId_usuario() {
+    public int getId_usuario() {
         return id_usuario;
     }
 
-    public void setId_usuario(Usuario id_usuario) {
+    public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
 
