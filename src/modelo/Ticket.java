@@ -23,27 +23,27 @@ public class Ticket {
     Date fecha_entrada;
     Date fecha_salida;
     String placa;
-    TipoVehiculo id_TipoVehiculo;
+    int id_tipoVehiculo;
     int id_usuario;
-    int idParqueadero;
-
-    public int getIdParqueadero() {
-        return idParqueadero;
+    int id_parqueadero;
+    int valor;
+    public int getId_parqueadero() {
+        return id_parqueadero;
     }
 
-    public void setIdParqueadero(int idParqueadero) {
-        this.idParqueadero = idParqueadero;
+    public void setId_parqueadero(int id_parqueadero) {
+        this.id_parqueadero = id_parqueadero;
     }
-    float valor;
+    
 
-    public Ticket( Date fecha_entrada, Date fecha_salida, String placa, TipoVehiculo id_TipoVehiculo, int id_usuario, float valor, int idParqueadero) {
+    public Ticket( Date fecha_entrada, Date fecha_salida, String placa, int id_TipoVehiculo, int id_usuario, int valor, int idParqueadero) {
         this.fecha_entrada = fecha_entrada;
         this.fecha_salida = fecha_salida;
         this.placa = placa;
-        this.id_TipoVehiculo = id_TipoVehiculo;
+        this.id_tipoVehiculo = id_TipoVehiculo;
         this.id_usuario = id_usuario;
         this.valor = valor;
-        this.idParqueadero = idParqueadero;
+        this.id_parqueadero = idParqueadero;
     }
 
    
@@ -55,18 +55,21 @@ public class Ticket {
         Conectar con = new Conectar();
         Connection reg = con.conexion();
         String sql;
-        sql = "INSERT INTO `ticket`( `fecha_entrada`, `fecha_salida`, `placa`, `valor`, `parqueadero_idparqueadero`, `tipo_vehiculo_idtipo_vehiculo`, `usuario_idusuario`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7])";
+        sql = "INSERT INTO `ticket`( `fecha_entrada`, `fecha_salida`, `placa`, `valor`, `parqueadero_idparqueadero`, `tipo_vehiculo_idtipo_vehiculo`, `usuario_idusuario`) VALUES (?,?,?,?,?,?,?)";
      try {
             PreparedStatement pst = reg.prepareStatement(sql);
             pst.setDate(1, fecha_entrada);
             pst.setDate(2, fecha_salida);
             pst.setString(3, placa);
-            pst.setInt(4, id_TipoVehiculo);
+            pst.setInt(4, valor);
+            pst.setInt(5, id_parqueadero);
+            pst.setInt(6, id_tipoVehiculo);
+            pst.setInt(7, id_usuario);
             
             int n = pst.executeUpdate();
 
             if (n > 0) {
-                JOptionPane.showMessageDialog(null, "Registrado con exito ");
+                JOptionPane.showMessageDialog(null, " Ticket Registrado en BD ");
             }
             pst.close();
             reg.close();
@@ -120,12 +123,12 @@ public class Ticket {
         this.placa = placa;
     }
 
-    public TipoVehiculo getId_TipoVehiculo() {
-        return id_TipoVehiculo;
+    public int getId_TipoVehiculo() {
+        return id_tipoVehiculo;
     }
 
-    public void setId_TipoVehiculo(TipoVehiculo id_TipoVehiculo) {
-        this.id_TipoVehiculo = id_TipoVehiculo;
+    public void setId_TipoVehiculo(int id_tipoVehiculo) {
+        this.id_tipoVehiculo = id_tipoVehiculo;
     }
 
     public int getId_usuario() {
@@ -136,11 +139,11 @@ public class Ticket {
         this.id_usuario = id_usuario;
     }
 
-    public float getValor() {
+    public int getValor() {
         return valor;
     }
 
-    public void setValor(float valor) {
+    public void setValor(int valor) {
         this.valor = valor;
     }
     

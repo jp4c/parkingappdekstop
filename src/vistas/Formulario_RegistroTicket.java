@@ -1,7 +1,8 @@
 package vistas;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import java.sql.*;
 import modelo.Ticket;
 import modelo.Usuario;
 
@@ -12,7 +13,7 @@ import modelo.Usuario;
  */
 /**
  *
- * @author Myrian Chica
+ * @author
  */
 public class Formulario_RegistroTicket extends javax.swing.JFrame {
 
@@ -178,16 +179,16 @@ public class Formulario_RegistroTicket extends javax.swing.JFrame {
         tf_hora.setVisible(true);
         Jlabel_Hora.setVisible(true);
         
-        
-        fecha_Entrada = new Date();
+        java.util.Date fecha_entrada =new java.util.Date();
         
         
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MMM-YYYY");
         SimpleDateFormat formatoHora = new SimpleDateFormat("h:mm a");
-        tf_fecha.setText(formatoFecha.format(fecha_Entrada));
-        tf_hora.setText(formatoHora.format(fecha_Entrada));
+        tf_fecha.setText(formatoFecha.format(fecha_entrada));
+        tf_hora.setText(formatoHora.format(fecha_entrada));
+        fecha_Entrada =new Date(fecha_entrada.getTime());
         
-        Ticket ticket=new Ticket( fecha_Entrada, null, tf_placa.getText(), null, empleado.getId(), 0,this.id_parqueadero);
+        Ticket ticket=new Ticket(fecha_Entrada, null, tf_placa.getText(), 0, empleado.getId(), 0,this.id_parqueadero);
         ticket.crear(ticket);
         
         
@@ -197,9 +198,11 @@ public class Formulario_RegistroTicket extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
-        fecha_Salida = new Date();
+        java.util.Date fecha_salida =new java.util.Date();
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MMM-YYYY");
         SimpleDateFormat formatoHora = new SimpleDateFormat("h:mm a");
+        fecha_Salida= new Date(fecha_salida.getTime());
+        
         long dife = fecha_Salida.getTime() - fecha_Entrada.getTime();
         tf_hora.setText(formatoHora.format(fecha_Salida));
         long horas = dife / (1000 * 60);
